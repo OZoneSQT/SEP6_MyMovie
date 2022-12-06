@@ -18,7 +18,7 @@ env:
   AZURE_WEBAPP_NAME: 'MyMovie'
   AZURE_WEBAPP_PACKAGE_PATH: './MyMovie'
   MSBUILD_PATH: '.\MyMovie\MyMovie.sln'
-  NUGET_VERSION: '3.1'
+  NUGET_VERSION: '3'
   
   # Add secrets to code
   #SECRET_IN_CODE: secrets.SECRET_FROM_GITHUB
