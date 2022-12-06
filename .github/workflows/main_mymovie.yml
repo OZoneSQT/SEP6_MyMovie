@@ -8,7 +8,6 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch:
 
 # CONFIGURATION
 # For help, go to https://github.com/Azure/Actions
@@ -17,7 +16,6 @@ env:
   AZURE_WEBAPP_PACKAGE_PATH: './MyMovie'
   AZURE_PUBLISH_PROFILE: secrets.AzureAppService_PublishProfile_7182fc364c9e40b1ba0e112c909f597b
   DOTNET_VERSION: '3.1.301'
-  
   # Add secrets to code
   #SECRET_IN_CODE: secrets.SECRET_FROM_GITHUB
   #SECRET_IN_CODE: secrets.SECRET_FROM_GITHUB
