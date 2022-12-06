@@ -54,4 +54,4 @@ jobs:
           app-name: 'MyMovie'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_D56CB9579CEE4E778DF2C61CF626ECC9 }}
-          package: .
+          package: ./MyMovie
