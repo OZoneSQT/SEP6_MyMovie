@@ -1,6 +1,8 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
-name: Build and deploy ASP.Net Core app to Azure Web App - MyMovie
+# https://learn.microsoft.com/en-us/azure/app-service/deploy-github-actions?tabs=applevel
+
+name: Build and deploy ASP.Net Core app to an Azure Web App
 
 #Trigger
 on:
@@ -12,10 +14,11 @@ on:
 # CONFIGURATION
 # For help, go to https://github.com/Azure/Actions
 env:
-  AZURE_WEBAPP_NAME: 'MyMovie'
-  AZURE_WEBAPP_PACKAGE_PATH: './SEP6_MyMovie/MyMovie'
   AZURE_PUBLISH_PROFILE: secrets.AzureAppService_PublishProfile_7182fc364c9e40b1ba0e112c909f597b
-  DOTNET_VERSION: '3.1.301'
+  AZURE_WEBAPP_NAME: 'MyMovie'
+  AZURE_WEBAPP_PACKAGE_PATH: './MyMovie'
+  MSBUILD_PATH: '.\MyMovie\MyMovie.sln'
+  NUGET_VERSION: '3.1.x'
   
   # Add secrets to code
   #SECRET_IN_CODE: secrets.SECRET_FROM_GITHUB
@@ -23,52 +26,30 @@ env:
   #SECRET_IN_CODE: secrets.SECRET_FROM_GITHUB
   #SECRET_IN_CODE: secrets.SECRET_FROM_GITHUB
 
+
 jobs:
-  build:
+  build-and-deploy:
     runs-on: windows-latest
-
     steps:
-      - uses: actions/checkout@v2
 
-      - name: Set up .NET Core
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
+    - uses: actions/checkout@main  
+    
+    - name: Install Nuget
+      uses: nuget/setup-nuget@v1
+      with:
+        nuget-version: ${{ env.NUGET_VERSION}}
+    - name: NuGet to restore dependencies as well as project-specific tools that are specified in the project file
+      run: nuget restore
+  
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v1.0.2
 
-      - name: Restore
-        run: dotnet restore
-
-      - name: Build
-        run: dotnet build --no-restore -c Release
-
-      - name: dotnet publish
-        run: dotnet publish --no-build -c Release -o ${{ env.DOTNET_ROOT }}/myapp   #path to artifact folder
-
-      - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v2
-        with:
-          name: .net-app
-          path: ${{env.DOTNET_ROOT}}/myapp
-
-  deploy:    
-    runs-on: windows-latest
-    needs: build
-
-    environment:
-      name: 'production'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-
-    steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v2
-        with:
-          name: .net-app
-
-      - name: Deploy to Azure Web App
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          slot-name: 'production'
-          publish-profile: ${{ env.AZURE_PUBLISH_PROFILE }}
-          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+    - name: Run MSBuild
+      run: msbuild ${{ env.MSBUILD_PATH }}
+       
+    - name: 'Run Azure webapp deploy action using publish profile credentials'
+      uses: azure/webapps-deploy@v2
+      with: 
+        app-name: ${{ env.AZURE_WEBAPP_NAME }} # Replace with your app name
+        publish-profile: ${{ env.AZURE_PUBLISH_PROFILE  }} # Define secret variable in repository settings as per action documentation
+        package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
