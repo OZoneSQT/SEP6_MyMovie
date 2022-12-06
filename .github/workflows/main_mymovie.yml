@@ -3,13 +3,29 @@
 
 name: Build and deploy ASP.Net Core app to Azure Web App - MyMovie
 
+#Trigger
 on:
   push:
     branches:
       - main
   workflow_dispatch:
 
+# CONFIGURATION
+# For help, go to https://github.com/Azure/Actions
+env:
+  AZURE_WEBAPP_NAME: 'MyMovie'
+  AZURE_WEBAPP_PACKAGE_PATH: './MyMovie'
+  AZURE_PUBLISH_PROFILE: secrets.AzureAppService_PublishProfile_7182fc364c9e40b1ba0e112c909f597b
+  DOTNET_VERSION: '3.1.301'
+  
+  # Add secrets to code
+  #SECRET_IN_CODE: secrets.SECRET_FROM_GITHUB
+  #SECRET_IN_CODE: secrets.SECRET_FROM_GITHUB
+  #SECRET_IN_CODE: secrets.SECRET_FROM_GITHUB
+  #SECRET_IN_CODE: secrets.SECRET_FROM_GITHUB
+
 jobs:
+      - name: Build
   build:
     runs-on: windows-latest
 
@@ -19,26 +35,31 @@ jobs:
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '3.1.301'
-          include-prerelease: true
+          dotnet-version: ${{ env.DOTNET_VERSION }}
 
-      - name: Build with dotnet
-        run: dotnet build --configuration Release
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore -c Release
 
       - name: dotnet publish
-        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
+        run: dotnet publish --no-build -c Release -o ${{ env.DOTNET_ROOT }}/myapp   #path to artifact folder
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
           name: .net-app
-          path: ${{env.DOTNET_ROOT}}
+          path: ${{env.DOTNET_ROOT}}/myapp
 
   deploy:
+      - name: Deploy
+      
     runs-on: windows-latest
     needs: build
+
     environment:
-      name: 'Production'
+      name: 'production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
@@ -51,7 +72,7 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'MyMovie'
-          slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_D56CB9579CEE4E778DF2C61CF626ECC9 }}
-          package: .
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          slot-name: 'production'
+          publish-profile: ${{ env.AZURE_PUBLISH_PROFILE }}
+          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
