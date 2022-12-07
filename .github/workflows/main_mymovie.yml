@@ -12,8 +12,12 @@ on:
 
 env:
   AZURE_WEBAPP_PACKAGE_PATH: './MyMovie' # set this to the path to your web app project, defaults to the repository root
+  AZURE_DEPLOY_PROFILE: secrets.AZUREAPPSERVICE_PUBLISHPROFILE_D56CB9579CEE4E778DF2C61CF626ECC9
   DOTNET_VERSION: '3.1.301' # set this to the dotnet version to use
-  #TMDB_KEY: ${{ secrets.TMDB_KEY }} # Include GitHub secret (API key)
+  Authentication:Twitter:ConsumerSecret: ${{ secrets.TWITTER_CONSUMERSECRET }} # Includes GitHub secret (API key)
+  Authentication:Twitter:ConsumerAPIKey: ${{ secrets.TWITTER_CONSUMERAPIKEY }} # Includes GitHub secret (API key)
+  Authentication:Google:ClientSecret: ${{ secrets.GOOGLE_CLIENTSECRET }} # Include GitHub secrets (API key)
+  Authentication:Google:ClientId: ${{ secrets.GOOGLE_CLIENTID }} # Include GitHub secrets (API key)
 
 jobs:
   build-and-deploy:
@@ -40,4 +44,4 @@ jobs:
           app-name: 'MyMovie'
           slot-name: 'Production'
           package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/output'
-          publish-profile: ${{ secrets.AzureAppService_PublishProfile_7182fc364c9e40b1ba0e112c909f597b }}
+          publish-profile: ${{ env.AZURE_DEPLOY_PROFILE }}
