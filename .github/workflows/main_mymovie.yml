@@ -10,50 +10,34 @@ on:
 
   workflow_dispatch:
 
+env:
+  AZURE_WEBAPP_PACKAGE_PATH: './MyMovie' # set this to the path to your web app project, defaults to the repository root
+  DOTNET_VERSION: '3' # set this to the dotnet version to use
+  #TMDB_KEY: ${{ secrets.TMDB_KEY }} # Include GitHub secret (API key)
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: windows-latest
-
     steps:
-      - uses: actions/checkout@v2
+      - name: 'Checkout GitHub Action'
+        uses: actions/checkout@v2
 
-      - name: Set up .NET Core
+      - name: Setup DotNet ${{ env.DOTNET_VERSION }} Environment
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '6.0.x'
+          dotnet-version: ${{ env.DOTNET_VERSION }}
 
-      - name: Build with dotnet
-        run: dotnet build --configuration Release
-
-      - name: dotnet publish
-        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp    # artifact path
-
-      - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v2
-        with:
-          name: .net-app
-          path: ${{env.DOTNET_ROOT}}/myapp    # artifact path
-
-  deploy:
-    runs-on: windows-latest
-    needs: build
-
-    environment:
-      name: 'production'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-
-    steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v2
-        with:
-          name: .net-app
-
-      - name: Deploy to Azure Web App
-        id: deploy-to-webapp
+      - name: 'Resolve Project Dependencies Using Dotnet'
+        shell: pwsh
+        run: |
+          pushd './${{ env.AZURE_WEBAPP_PACKAGE_PATH }}'
+          dotnet build --configuration Release --output ./output
+          popd
+      - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
+        id: deploy-to-webapp
         with:
           app-name: 'MyMovie'
-          slot-name: 'production'
+          slot-name: 'Production'
+          package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/output'
           publish-profile: ${{ secrets.AzureAppService_PublishProfile_7182fc364c9e40b1ba0e112c909f597b }}
-          package: './MyMovie'
