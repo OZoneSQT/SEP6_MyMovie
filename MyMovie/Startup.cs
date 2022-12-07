@@ -49,7 +49,6 @@ namespace MyMovie
         {
             twitterOptions.ConsumerKey = Configuration["Authentication:Twitter:ConsumerAPIKey"];
             twitterOptions.ConsumerSecret = Configuration["Authentication:Twitter:ConsumerSecret"];
-            twitterOptions.RetrieveUserDetails = true;
         });
 
         }
