@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -11,6 +12,7 @@ namespace MyMovie
 {
     public class Program
     {
+        
         public static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();
@@ -22,5 +24,6 @@ namespace MyMovie
                 {
                     webBuilder.UseStartup<Startup>();
                 });
+
     }
 }

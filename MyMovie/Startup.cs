@@ -27,6 +27,7 @@ namespace MyMovie
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
@@ -34,6 +35,23 @@ namespace MyMovie
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            services.AddAuthentication()
+        .AddGoogle(options =>
+        {
+            IConfigurationSection googleAuthNSection =
+                Configuration.GetSection("Authentication:Google");
+
+            options.ClientId = googleAuthNSection["ClientId"];
+            options.ClientSecret = googleAuthNSection["ClientSecret"];
+        })
+        .AddTwitter(twitterOptions =>
+        {
+            twitterOptions.ConsumerKey = Configuration["Authentication:Twitter:ConsumerAPIKey"];
+            twitterOptions.ConsumerSecret = Configuration["Authentication:Twitter:ConsumerSecret"];
+            twitterOptions.RetrieveUserDetails = true;
+        });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
