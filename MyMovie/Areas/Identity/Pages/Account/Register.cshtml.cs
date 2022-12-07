@@ -67,10 +67,11 @@ namespace MyMovie.Areas.Identity.Pages.Account
             public string Name { get; set; }
         }
 
-        public void OnGet(string returnUrl = null)
+        public async Task OnGetAsync(string returnUrl = null)
         {
             ViewData["roles"] = _roleManager.Roles.ToList();
             ReturnUrl = returnUrl;
+            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
