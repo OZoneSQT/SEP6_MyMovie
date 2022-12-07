@@ -16,8 +16,8 @@ on:
 env:
   AZURE_PUBLISH_PROFILE: secrets.AzureAppService_PublishProfile_7182fc364c9e40b1ba0e112c909f597b
   AZURE_WEBAPP_NAME: 'MyMovie'
-  AZURE_WEBAPP_PACKAGE_PATH: '../SEP6_MyMovie'
-  MSBUILD_PATH: '../SEP6_MyMovie/MyMovie.sln'
+  AZURE_WEBAPP_PACKAGE_PATH: '.'
+  MSBUILD_PATH: './MyMovie.sln'
   NUGET_VERSION: '3'
   
   # Add secrets to code
