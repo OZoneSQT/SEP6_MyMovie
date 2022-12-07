@@ -7,51 +7,41 @@ on:
   push:
     branches:
       - main
+
   workflow_dispatch:
 
+env:
+  AZURE_WEBAPP_PACKAGE_PATH: './MyMovie' # set this to the path to your web app project, defaults to the repository root
+  AZURE_DEPLOY_PROFILE: secrets.AZUREAPPSERVICE_PUBLISHPROFILE_3F60EFC6AAC249D1A17201842DB4E807
+  DOTNET_VERSION: '3.1.301' # set this to the dotnet version to use
+  Authentication:Twitter:ConsumerSecret: ${{ secrets.TWITTER_CONSUMERSECRET }} # Includes GitHub secret (API key)
+  Authentication:Twitter:ConsumerAPIKey: ${{ secrets.TWITTER_CONSUMERAPIKEY }} # Includes GitHub secret (API key)
+  Authentication:Google:ClientSecret: ${{ secrets.GOOGLE_CLIENTSECRET }} # Include GitHub secrets (API key)
+  Authentication:Google:ClientId: ${{ secrets.GOOGLE_CLIENTID }} # Include GitHub secrets (API key)
+
 jobs:
-  build:
+  build-and-deploy:
     runs-on: windows-latest
-
     steps:
-      - uses: actions/checkout@v2
+      - name: 'Checkout GitHub Action'
+        uses: actions/checkout@v2
 
-      - name: Set up .NET Core
+      - name: Setup DotNet ${{ env.DOTNET_VERSION }} Environment
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '3.1.301'
-          include-prerelease: true
+          dotnet-version: ${{ env.DOTNET_VERSION }}
 
-      - name: Build with dotnet
-        run: dotnet build --configuration Release
-
-      - name: dotnet publish
-        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
-
-      - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v2
-        with:
-          name: .net-app
-          path: ${{env.DOTNET_ROOT}}/myapp
-
-  deploy:
-    runs-on: windows-latest
-    needs: build
-    environment:
-      name: 'Production'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-
-    steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v2
-        with:
-          name: .net-app
-
-      - name: Deploy to Azure Web App
-        id: deploy-to-webapp
+      - name: 'Resolve Project Dependencies Using Dotnet'
+        shell: pwsh
+        run: |
+          pushd './${{ env.AZURE_WEBAPP_PACKAGE_PATH }}'
+          dotnet build --configuration Release --output ./output
+          popd
+      - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
+        id: deploy-to-webapp
         with:
           app-name: 'MyMovie'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_3F60EFC6AAC249D1A17201842DB4E807 }}
-          package: ./MyMovie
+          package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/output'
+          publish-profile: ${{ env.AZURE_DEPLOY_PROFILE }}
