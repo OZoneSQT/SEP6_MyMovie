@@ -12,7 +12,6 @@ on:
 
 
 jobs:
-      - name: Build
   build:
     runs-on: windows-latest
 
@@ -38,8 +37,6 @@ jobs:
           path: ${{env.DOTNET_ROOT}}/myapp
 
   deploy:
-      - name: Deploy
-      
     runs-on: windows-latest
     needs: build
 
