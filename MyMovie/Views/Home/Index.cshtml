@@ -2,7 +2,20 @@
     ViewData["Title"] = "Home Page";
 }
 
+<!-- 
+    https://www.tutorialspoint.com/asp.net_mvc/asp.net_mvc_quick_guide.htm 
+    http://www.binaryintellect.net/articles/85fb9a1d-6b0d-4d1f-932c-555bd27ba401.aspx
+    https://www.aspsnippets.com/Articles/Bind-Model-Properties-in-ASPNet-Core-Razor-Pages.aspx
+-->
+
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    
+    <form asp-action="" >
+        <input type="text" id="searchString" name="searchString" />
+        <input type="submit" value="Search" />
+
+        <input type="checkbox" id="discoverCheckbox" name="discoverCheckbox" value="discoverCheckbox">
+        <label for="discoverCheckbox">Discover</label>
+    </form> 
+
 </div>
