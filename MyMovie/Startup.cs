@@ -46,6 +46,13 @@ namespace MyMovie
             options.ClientId = googleAuthNSection["ClientId"];
             options.ClientSecret = googleAuthNSection["ClientSecret"];
         })
+        .AddFacebook(options =>
+        {
+            IConfigurationSection FBAuthNSection =
+            Configuration.GetSection("Authentication:FB");
+            options.ClientId = FBAuthNSection["ClientId"];
+            options.ClientSecret = FBAuthNSection["ClientSecret"];
+        })
         .AddTwitter(twitterOptions =>
         {
             twitterOptions.ConsumerKey = Configuration["Authentication:Twitter:ConsumerAPIKey"];
