@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System.Data;
+using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,6 +15,7 @@ namespace MyMovie.Controllers
 		{
 			_roleManager = roleManager;
 		}
+		[Authorize(Roles = "Admin")]
 		public IActionResult Index()
 		{
 			var roles = _roleManager.Roles.ToList();
