@@ -18,6 +18,9 @@ env:
   Authentication:Twitter:ConsumerAPIKey: ${{ secrets.TWITTER_CONSUMERAPIKEY }} # Includes GitHub secret (API key)
   Authentication:Google:ClientSecret: ${{ secrets.GOOGLE_CLIENTSECRET }} # Include GitHub secrets (API key)
   Authentication:Google:ClientId: ${{ secrets.GOOGLE_CLIENTID }} # Include GitHub secrets (API key)
+  SendGridKey: ${{ secrets.EMAIL_SENDGRIDKEY }} # Include GitHub secrets (API key)
+  Authentication:Facebook:AppId: ${{ secrets.FACEBOOK_APPID }} # Include GitHub secrets (API key)
+  Authentication:Facebook:AppSecret: ${{ secrets.FACEBOOK_APPSECRET }} # Include GitHub secrets (API key)
 
 jobs:
   build-and-deploy:
