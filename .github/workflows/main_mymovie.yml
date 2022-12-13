@@ -35,6 +35,7 @@ jobs:
         shell: pwsh
         run: |
           pushd './${{ env.AZURE_WEBAPP_PACKAGE_PATH }}'
+          dotnet publish -c Release -o ./output
           dotnet build --configuration Release --output ./output
           popd
       - name: 'Deploy to Azure Web App'
