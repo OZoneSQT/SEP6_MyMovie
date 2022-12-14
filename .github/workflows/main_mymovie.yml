@@ -6,14 +6,21 @@ name: Build and deploy ASP.Net Core app to Azure Web App - MyMovie
 on:
   push:
     branches:
-      - main
+      - DELETEmain # Do not run on push to main branch
+
 
   workflow_dispatch:
 
 env:
   AZURE_WEBAPP_PACKAGE_PATH: './MyMovie' # set this to the path to your web app project, defaults to the repository root
-  DOTNET_VERSION: '3.1.301' # set this to the dotnet version to use
-  #TMDB_KEY: ${{ secrets.TMDB_KEY }} # Include GitHub secret (API key)
+  DOTNET_VERSION: '3.1.x' # set this to the dotnet version to use
+  Authentication:Twitter:ConsumerSecret: ${{ secrets.TWITTER_CONSUMERSECRET }} # Includes GitHub secret (API key)
+  Authentication:Twitter:ConsumerAPIKey: ${{ secrets.TWITTER_CONSUMERAPIKEY }} # Includes GitHub secret (API key)
+  Authentication:Google:ClientSecret: ${{ secrets.GOOGLE_CLIENTSECRET }} # Include GitHub secrets (API key)
+  Authentication:Google:ClientId: ${{ secrets.GOOGLE_CLIENTID }} # Include GitHub secrets (API key)
+  SendGridKey: ${{ secrets.EMAIL_SENDGRIDKEY }} # Include GitHub secrets (API key)
+  Authentication:Facebook:AppId: ${{ secrets.FACEBOOK_APPID }} # Include GitHub secrets (API key)
+  Authentication:Facebook:AppSecret: ${{ secrets.FACEBOOK_APPSECRET }} # Include GitHub secrets (API key)
 
 jobs:
   build-and-deploy:
@@ -32,6 +39,7 @@ jobs:
         run: |
           pushd './${{ env.AZURE_WEBAPP_PACKAGE_PATH }}'
           dotnet build --configuration Release --output ./output
+          dotnet publish -c Release -o ./output
           popd
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
@@ -40,4 +48,4 @@ jobs:
           app-name: 'MyMovie'
           slot-name: 'Production'
           package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/output'
-          publish-profile: ${{ secrets.AzureAppService_PublishProfile_7182fc364c9e40b1ba0e112c909f597b }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_3F60EFC6AAC249D1A17201842DB4E807 }}
