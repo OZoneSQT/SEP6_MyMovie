@@ -65,6 +65,11 @@ namespace MyMovie.Areas.Identity.Pages.Account
             public string ConfirmPassword { get; set; }
 
             public string Name { get; set; }
+
+            [Required]
+            [DataType(DataType.Text)]
+            [Display(Name = "Username")]
+            public string UserName { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -81,7 +86,7 @@ namespace MyMovie.Areas.Identity.Pages.Account
             var role = _roleManager.FindByIdAsync(Input.Name).Result;
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser { UserName = Input.Email, Email = Input.Email };
+                var user = new IdentityUser { UserName = Input.UserName, Email = Input.Email };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
@@ -108,7 +113,6 @@ namespace MyMovie.Areas.Identity.Pages.Account
 					//    await _signInManager.SignInAsync(user, isPersistent: false);
 					//    return LocalRedirect(returnUrl);
 					//}
-					await _signInManager.SignInAsync(user, isPersistent: false);
                     return LocalRedirect(returnUrl);
 				}
                 foreach (var error in result.Errors)
