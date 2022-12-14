@@ -19,4 +19,12 @@
 
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\FunctionClearUserdata\FunctionClearUserdata.csproj" />
+    <ProjectReference Include="..\FunctionDropUserdata\FunctionDropUserdata.csproj" />
+    <ProjectReference Include="..\FunctionGetUserdata\FunctionGetUserdata.csproj" />
+    <ProjectReference Include="..\FunctionSearch\FunctionSearch.csproj" />
+    <ProjectReference Include="..\FunctionSetUserdata\FunctionSetUserdata.csproj" />
+  </ItemGroup>
+
 </Project>
