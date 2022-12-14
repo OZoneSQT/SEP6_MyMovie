@@ -41,8 +41,12 @@ namespace MyMovie.Areas.Identity.Pages.Account
             }
 
             Email = email;
-            // Once you add a real email sender, you should remove this code that lets you confirm the account
-            DisplayConfirmAccountLink = true;
+            
+            // TODO Once you add a real email sender, you should remove this code that lets you confirm the account
+            // Info to real is ready
+
+            DisplayConfirmAccountLink = false;
+            
             if (DisplayConfirmAccountLink)
             {
                 var userId = await _userManager.GetUserIdAsync(user);
