@@ -51,10 +51,10 @@ jobs:
       - name: Deploy
       
       - name: Upload ftp
-        uses: sebastianpopp/ftp-action@releases/v2
+        uses: SamKirkland/FTP-Deploy-Action@4.3.3
         with:
-          host: ${{ secrets.FTP_HOST }}
-          user: ${{ secrets.FTP_USER }}
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USER }}
           password: ${{ secrets.FTP_PW }}
           localDir: "./output"
           remoteDir: ${{ secrets.FTP_DIR }} 
