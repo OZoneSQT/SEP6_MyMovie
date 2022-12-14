@@ -6,7 +6,7 @@ name: Build and deploy ASP.Net Core app to Azure Web App - MyMovie
 on:
   push:
     branches:
-      - main
+      - DELETEmain # Do not run on push to main branch
 
 
   workflow_dispatch:
