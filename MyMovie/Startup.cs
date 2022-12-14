@@ -4,11 +4,13 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MyMovie.Data;
+using MyMovie.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,6 +37,7 @@ namespace MyMovie
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddTransient<IEmailSender, EmailSender>();
             services.AddControllersWithViews();
 
             services.Configure<CookiePolicyOptions>(options =>
@@ -60,7 +63,6 @@ namespace MyMovie
         {
             twitterOptions.ConsumerKey = Configuration["Authentication:Twitter:ConsumerAPIKey"];
             twitterOptions.ConsumerSecret = Configuration["Authentication:Twitter:ConsumerSecret"];
-            twitterOptions.RetrieveUserDetails = true;
         });
 
         }
