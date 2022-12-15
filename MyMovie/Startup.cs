@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Facebook;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -58,6 +59,14 @@ namespace MyMovie
 
             options.ClientId = googleAuthNSection["ClientId"];
             options.ClientSecret = googleAuthNSection["ClientSecret"];
+        })
+        .AddFacebook(facebookOptions =>
+        {
+            IConfigurationSection FBAuthNSection =
+            Configuration.GetSection("Authentication:FB");
+            facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
+            facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
+
         })
         .AddTwitter(twitterOptions =>
         {
