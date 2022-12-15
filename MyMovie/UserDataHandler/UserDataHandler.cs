@@ -1,10 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using MyMovie.SearchHandler;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Data;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -116,7 +113,7 @@ namespace MyMovie.UserDataHandler
         {
             ArrayList list = new ArrayList();
             HttpClient client = new HttpClient();
-            string url = $"https://mymoviesearch.azurewebsites.net/?user={userName}";
+            string url = $"https://mymoviegetlistdata.azurewebsites.net/?user={userName}";
 
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 

@@ -13,6 +13,9 @@ namespace MyMovie.UserDataHandler
         // Drop item from list
         void DropDataFromList(string userName, string listName, int itemId);
 
+        // Drop list
+        void DropList(string userName, string listName);
+
         // Drop users data 
         void ClearData(string userName);
 
