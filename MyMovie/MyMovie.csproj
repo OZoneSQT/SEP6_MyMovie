@@ -3,6 +3,8 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>aspnet-MyMovie-d3c1cd88-9458-42f5-af87-d55d93b3968e</UserSecretsId>
+    <OutputType>WinExe</OutputType>
+    <StartupObject></StartupObject>
   </PropertyGroup>
 
   <ItemGroup>
@@ -21,11 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FunctionClearUserdata\FunctionClearUserdata.csproj" />
-    <ProjectReference Include="..\FunctionDropUserdata\FunctionDropUserdata.csproj" />
-    <ProjectReference Include="..\FunctionGetUserdata\FunctionGetUserdata.csproj" />
     <ProjectReference Include="..\FunctionSearch\FunctionSearch.csproj" />
-    <ProjectReference Include="..\FunctionSetUserdata\FunctionSetUserdata.csproj" />
   </ItemGroup>
 
 </Project>
