@@ -19,6 +19,11 @@ namespace MyMovie.UserDataHandler
             throw new System.NotImplementedException();
         }
 
+        public void DropList(string userName, string listName)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public int GetItemCountScore(string userName)
         {
             throw new System.NotImplementedException();
@@ -30,6 +35,11 @@ namespace MyMovie.UserDataHandler
         }
 
         public TopModel GetItemRating(string category, int n)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public TopModel GetItemRating(int n)
         {
             throw new System.NotImplementedException();
         }

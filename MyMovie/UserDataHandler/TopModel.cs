@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 
 namespace MyMovie.UserDataHandler
 {
     public class TopModel
     {
-        public List<ItemModel> topList { get; set; }
+        public int itemId { get; set; }
+        public int count { get; set; }
 
     }
 }

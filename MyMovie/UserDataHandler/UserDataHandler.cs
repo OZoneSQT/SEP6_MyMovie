@@ -16,21 +16,21 @@ namespace MyMovie.UserDataHandler
         public void ClearData(string userName)
         {
             HttpClient client = new HttpClient();
-            string url = $"https://mymoviecleardata.azurewebsites.net/?searchString={userName}";
+            string url = $"https://mymoviecleardata.azurewebsites.net/?userName={userName}";
             client.BaseAddress = new System.Uri(url);
         }
 
         public void DropDataEntry(string userName, int itemId, string timeStamp)
         {
             HttpClient client = new HttpClient();
-            string url = $"https://mymoviedropdataentry.azurewebsites.net/?user={userName}&item={itemId}&time={timeStamp}";
+            string url = $"https://mymoviedropdataentry.azurewebsites.net/?userName={userName}&itemId={itemId}&timeStamp={timeStamp}";
             client.BaseAddress = new System.Uri(url);
         }
 
         public void DropDataFromList(string userName, string listName, int itemId)
         {
             HttpClient client = new HttpClient();
-            string url = $"https://mymoviedropdatafromlist.azurewebsites.net/?user={userName}&item={itemId}&list={listName}";
+            string url = $"https://mymoviedropdatafromlist.azurewebsites.net/?userName={userName}&itemId={itemId}&listName={listName}";
             client.BaseAddress = new System.Uri(url);
         }
 
@@ -42,18 +42,18 @@ namespace MyMovie.UserDataHandler
         private static async Task<int> _GetItemCountScore(string userName)
         {
             HttpClient client = new HttpClient();
-            string url = $"https://mymoviegeticountscore.azurewebsites.net/?user={userName}";
- 
+            string url = $"https://mymoviegeticountscore.azurewebsites.net/?userName={userName}";
+
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
             dynamic response = await client.GetAsync(url).ConfigureAwait(false);
- 
+
             if (response.IsSuccessStatusCode)
-            {  
+            {
                 string result = response.Content.ReadAsStringAsync().Result;
                 response = JsonConvert.DeserializeObject(result);
             }
-            
+
             return response;
         }
 
@@ -65,7 +65,7 @@ namespace MyMovie.UserDataHandler
         private static async Task<ItemModel> _GetItemData(int itemId)
         {
             HttpClient client = new HttpClient();
-            string url = $"https://mymoviegetitemdata.azurewebsites.net/?id={itemId}";
+            string url = $"https://mymoviegetitemdata.azurewebsites.net/?itemId={itemId}";
 
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
@@ -81,15 +81,15 @@ namespace MyMovie.UserDataHandler
 
         }
 
-        public TopModel GetItemRating(string category, int n)
+        public TopModel GetItemRating(int n)
         {
-            return _GetItemRating(category, n).Result;
+            return _GetItemRating(n).Result;
         }
 
-        private static async Task<TopModel> _GetItemRating(string category, int n)
+        private static async Task<TopModel> _GetItemRating(int n)
         {
             HttpClient client = new HttpClient();
-            string url = $"https://mymoviegetitemrating.azurewebsites.net/?category={category}&range={n}";
+            string url = $"https://mymoviegetitemrating.azurewebsites.net/?n={n}";
 
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
@@ -113,7 +113,7 @@ namespace MyMovie.UserDataHandler
         {
             ArrayList list = new ArrayList();
             HttpClient client = new HttpClient();
-            string url = $"https://mymoviegetlistdata.azurewebsites.net/?user={userName}";
+            string url = $"https://mymoviegetlistdata.azurewebsites.net/?userName={userName}";
 
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
@@ -133,10 +133,15 @@ namespace MyMovie.UserDataHandler
         public void PutData(string userName, string listName, int itemId, string comment)
         {
             HttpClient client = new HttpClient();
-            string url = $"https://mymoviesearch.azurewebsites.net/?user={userName}&list={listName}&id={itemId}&comment={comment}";
+            string url = $"https://mymoviesearch.azurewebsites.net/?userName={userName}&listName={listName}&itemId={itemId}&comment={comment}";
             client.BaseAddress = new System.Uri(url);
         }
 
+        public void DropList(string userName, string listName)
+        {
+            HttpClient client = new HttpClient();
+            string url = $"https://mymoviesearch.azurewebsites.net/?userName={userName}&listName={listName}";
+            client.BaseAddress = new System.Uri(url);
+        }
     }
-
 }

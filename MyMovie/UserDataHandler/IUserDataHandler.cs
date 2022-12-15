@@ -29,7 +29,7 @@ namespace MyMovie.UserDataHandler
         int GetItemCountScore(string userName);
 
         // Get rating
-        TopModel GetItemRating(string category, int n);
+        TopModel GetItemRating(int n);
 
     }
 }
